@@ -1,4 +1,16 @@
+#ifndef MD5_H
+#define MD5_h
+
+#include <sys/types.h>
+
 #include <string>
+#include <fstream>
+
+typedef unsigned char BYTE;
+typedef unsigned int  DWORD;
+
+using std::string;
+using std::ifstream;
 
 class MD5 {
  public:
@@ -26,13 +38,20 @@ class MD5 {
   //
   std::string BytesToHexString(const BYTE * input, size_t length);
 
+  /* class uncopyable */
+  MD5(const MD5&);
+  MD5& operator=(const MD5&);
+
  private:
-  DWORD state[4];         // the four initial vectors
-  DWORD count[2];         // for count, count[0]:low bits, count[1]:high bits
-  BYTE buffer_block[64];  //
-  BYTE digest[16];        //
-  bool is_finished;       //
+  DWORD state_[4];         // the four initial vectors
+  DWORD count_[2];         // for count, count[0]:low bits, count[1]:high bits
+  BYTE buffer_block_[64];  //
+  BYTE digest_[16];        //
+  bool is_finished_;       //
 
   static const BYTE padding[64];
   static const char hex[16];
+  static const size_t BUFFER_SIZE = 1024;
 };
+
+#endif  /* MD5_H */
